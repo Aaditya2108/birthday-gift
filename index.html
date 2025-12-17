@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Gift Awaits...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .gift-text {
+            color: white;
+            font-size: 2.5em;
+            cursor: pointer;
+            user-select: none;
+            padding: 30px 60px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .gift-text:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.2);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(255,255,255,0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+        }
+
+        .click-counter {
+            color: white;
+            font-size: 1.2em;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+
+        /* Floating gifts background */
+        .floating-gifts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .floating-gift {
+            position: absolute;
+            font-size: 2em;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .floating-gift:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-gift:nth-child(2) { top: 20%; right: 15%; animation-delay: 1s; }
+        .floating-gift:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 2s; }
+        .floating-gift:nth-child(4) { bottom: 10%; right: 10%; animation-delay: 3s; }
+    </style>
+</head>
+<body>
+    <div class="floating-gifts">
+        <div class="floating-gift">🎁</div>
+        <div class="floating-gift">🎈</div>
+        <div class="floating-gift">🎊</div>
+        <div class="floating-gift">🎉</div>
+    </div>
+
+    <div class="container">
+        <div class="gift-text" id="giftButton" onclick="handleClick()">
+            Click to see your gift
+        </div>
+        <div class="click-counter" id="clickCounter"></div>
+    </div>
+
+    <script>
+        let clickCount = 0;
+        const messages = [
+            "Click to see your gift",
+            "Click harder",
+            "Do you really wanna see it? Are you sure?"
+        ];
+
+        function handleClick() {
+            clickCount++;
+            
+            const button = document.getElementById('giftButton');
+            const counter = document.getElementById('clickCounter');
+            
+            if (clickCount <= 2) {
+                button.textContent = messages[clickCount];
+                counter.textContent = `Clicks: ${clickCount}/3`;
+                
+                // Click feedback
+                button.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    button.style.transform = '';
+                }, 100);
+                
+                // Shake on second click
+                if (clickCount === 2) {
+                    button.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        button.style.animation = 'pulse 2s infinite';
+                    }, 500);
+                }
+            } else if (clickCount === 3) {
+                counter.textContent = "Here it comes... 🎂";
+                button.textContent = "Get ready...";
+                button.style.background = 'rgba(76, 175, 80, 0.3)';
+                
+                // Redirect after dramatic pause
+                setTimeout(() => {
+                    window.location.href = 'birthday.html'; // CHANGE THIS to your birthday page filename
+                }, 1500);
+            }
+        }
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
